@@ -11,6 +11,8 @@ This folder contains a very simple calculator, this calculator is able to:
 
 <br>
 
+## Lexical Analyis
+
 First, we need to create a .l (Flex) file to produce our **lexical analyzer**. For this, the definition remains simple (only needs two headers + declaring a function to handle parsing errors).
 We could also include Definition names for our regexes making the rules section simpler, but due to the already simple nature of our calculator, it is not yet necessary.
 
@@ -19,6 +21,8 @@ In the Rules section, we simply define the **Regexes** for variables names (any 
 We end with the code section where we add **yywrap()** function, which is called when the lexer reaches the end of the input and tells it that the input is finsihed and that it should stop (we return 1, a return 0 would indiate more inputs to come).
 
 <br>
+
+## Parsing
 
 Then, we need our .y (Yacc) file, which will mainly be here to 'understand' the output of our lexer.
 
