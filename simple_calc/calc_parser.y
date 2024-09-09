@@ -3,6 +3,8 @@
 %left '*' '/'
 
 %{
+  #include <stdio.h>
+  #include <stdlib.h>
   void yyerror(char *);
   int yylex(void);
   int sym[26];
