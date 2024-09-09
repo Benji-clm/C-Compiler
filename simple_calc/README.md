@@ -34,4 +34,19 @@ Then we have the **grammar rules**, which is what will be used by Yacc to parse 
 
 Finally, we write the function for error handling **yyerror()**, and the main function which initiates the parsing process by calling **yyparse()**
 
+<br>
 
+## Run the programs
+
+In the **Cygwin64 Terminal** (for windows, Linux requires a different method), run the following commands:
+
+```
+flex calc_lexer.l
+// this creates lex.yy.c
+yacc -d calc_parser.y
+// this creates y.tab.c and y.tab.h
+gcc -o calculator y.tab.c lex.yy.c -lfl
+// this comiles both our lexer and parser together to create our executable file, calculator.exe
+./calculator
+// Finally run the calculator.
+```
