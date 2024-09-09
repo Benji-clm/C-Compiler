@@ -34,7 +34,7 @@ Finally, we write the function for error handling **yyerror()**, and the main fu
 
 <br>
 
-## Run the programs
+## Generate, Compile and Run
 
 In the **Cygwin64 Terminal** (for windows, Linux requires a different method), run the following commands:
 
