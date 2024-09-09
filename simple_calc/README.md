@@ -2,12 +2,10 @@
 
 This folder contains a very simple calculator, this calculator is able to:
 
-\begin{itemize}
-  \item Perform the four operations: +,-,* and /
-  \item Create one letter variables capable of being used to store values and perform operations.
-  \item Using correct, non-ambiguate grammar whilst keeping correct precedence for our operators.
-  \item Recognise brackets, which will change the precendence of operations.
-\end{itemize}
+- Perform the four operations: +,-,* and /
+- Create one letter variables capable of being used to store values and perform operations.
+- Using correct, non-ambiguate grammar whilst keeping correct precedence for our operators.
+ - Recognise brackets, which will change the precendence of operations.
 
 <br>
 
