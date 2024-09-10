@@ -94,3 +94,17 @@ yacc -d parser.y
 gcc lex.yy.c y.tab.c <version>.c -o calc // replace <version> with either interpreter, compiler or graph.
 ./calc
 ```
+
+<br>
+
+## Include File
+
+We start by creating **calc2.h**, to provide the correct headers and data structures that will be used in several other files. It is an essential part of to manage the parse tree and symbols in the program.
+In this file we define:
+- The **types** of nodes of our tree (constant values, identifier (variables) and operators.
+- The **structures** for each node type
+- A nodeTypeTag structure, in which we use `union`, allowing us to use a single memory cell location to store any of the three data types we have (only one type at a time however).
+- A symbol table (similarly as for the simpler calculator).
+
+
+
