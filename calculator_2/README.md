@@ -81,3 +81,16 @@ Graph 1:
                         id(X) c(1)
 
 ```
+
+<br>
+
+## How to Run it
+
+To Run this calculator, it works similarly as for the previous one, start by creater the lexical analyser and the parser, (files lex.yy.c, y.tab.c and y.tab.h), then depending on which output you want, compile with the wanted version of the calculator.
+
+```
+flex lexer.l
+yacc -d parser.y
+gcc lex.yy.c y.tab.c <version>.c -o calc // replace <version> with either interpreter, compiler or graph.
+./calc
+```
