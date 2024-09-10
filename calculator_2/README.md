@@ -15,6 +15,8 @@ while (x < 3) {
 }
 ```
 
+<br>
+
 With ouptut of the **interpreter** being:
 
 ```
@@ -22,6 +24,8 @@ With ouptut of the **interpreter** being:
 1
 2
 ```
+
+<br>
 
 The **compiler**:
 
@@ -42,6 +46,8 @@ L000:
         jmp     L000
 L001:
 ```
+
+<br>
 
 The **syntax tree** (graph):
 
