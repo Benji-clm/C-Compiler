@@ -148,5 +148,11 @@ Note how we use `%nonassoc UMINUS`, (unary minus, which negates the values of th
 2. The parser matches the tokens to the grammar rules, and constructrs the AST by creating three nodes: identifier - `y`, constant - `3`, operator - `+` which links `y` and `3` as its operands
 3. Once the AST is constructed, the `ex()` function is used to **execute** and **evalutate** the AST, which traverses the tree and performs the appropriate actions recursively based on the nodes.
 
+We then proceed to write the **Grammar Rules and Actions**, this contains the rule explaining of the action code builds an AST nodes representing statements and expressions.
+
+Finally we write the **Post-Grammar Code**, which are the functions defining how to create the different types of our AST's nodes.
+
+
+
 
 
