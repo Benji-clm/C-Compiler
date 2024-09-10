@@ -1,7 +1,7 @@
 /* source code courtesy of Frank Thomas Braun */
 #include <stdio.h>
 #include <string.h>
-#include "calc3.h"
+#include "calc2.h"
 #include "y.tab.h"
 int del = 1; /* distance of graph columns */
 int eps = 3; /* distance of graph lines */
