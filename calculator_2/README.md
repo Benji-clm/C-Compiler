@@ -106,5 +106,48 @@ In this file we define:
 - A **nodeTypeTag structure**, in which we use `union`, allowing us to use a single memory cell location to store any of the three data types we have (only one type at a time however).
 - A **symbol table** (similarly as for the simpler calculator).
 
+<br>
+
+## Lexer Analysis
+
+For this section, it once again follows a very similar pattern as the previous calculator, the same Regex is used for the variable names and the digits. We however add a great deal of operation, for single character operation, we can simply copy verbatim the character itself. For operators using 2 or more characters, we require special handling, as Flex/Lex works by matching the _longest possible input_, hence we need explicit rules to ensure that they are being matched as a single token. These specific rules return distinct tokens for these operations:
+
+```
+">="        return GE;
+"<="        return LE;
+"=="        return EQ;
+"!="        return NE;
+"while"     return WHILE;
+"if"        return IF;
+"else"      return ELSE;
+"print"     return PRINT;
+```
+
+<br>
+
+## Parser
+
+In the `parser.y` file, we start by including the headers, the symbol table and the the prototypes definitions in the prologue section. Then, in the definitions section we start with the union, as mentionned earlier, it defines the types of semantic values that tokens and nonterminals can have. We also declare all our tokens, and write the opearator precedence and associativity declations:
+
+```
+%token <iValue> INTEGER
+%token <sIndex> VARIABLE
+%token WHILE IF PRINT
+%nonassoc IFX
+%nonassoc ELSE
+
+%left GE LE EQ NE '>' '<'
+%left '+' '-'
+%left '*' '/'
+%nonassoc UMINUS
+```
+
+Note how we use `%nonassoc UMINUS`, (unary minus, which negates the values of the operand); this has the highest precedence, and we later write in the rules that it must precede an `expr`.  We also note how operands have higher precedence than If, else ... statements, this allows code such as `while(x < y + 3)` to work as each token in `y+3` will be reconginsed by the lexer, and the grammar rules in the parser will make it so that `y + 3` will be recursively evaluated before performing the  `<` operator[^1].
+
+[^1]: This is grossly oversimplified for the sake of keeping the text short, what actually happens is:
+1. The lexer converts the input `y+3` into the token stream `VARIABLE + INTEGER`
+2. The parser matches the tokens to the grammar rules, and constructrs the AST by creating three nodes: identifier - `y`, constant - `3`, operator - `+` which links `y` and `3` as its operands
+3. Once the AST is constructed, the `ex()` function is used to **execute** and **evalutate** the AST, which traverses the tree and performs the appropriate actions recursively based on the nodes.
+
 
 
