@@ -1,6 +1,6 @@
 # Calculator
 
-This folder contains a significantly more complex calculator than the previous simple_calc. Major changes will include control constructs such as **if-else** and **while** statements. In addition, I will start working on constructing a syntax tree during parsing. After parsing, we walk the syntax tree to produce the ouput. This calculator will have three versions:
+This folder contains a significantly more complex calculator than the previous simple_calc. Major changes will include control constructs such as **if-else** and **while** statements. In addition, I will start working on constructing a syntax tree during parsing. After parsing, we walk through the syntax tree to produce the ouput. We will do so through three different methods:
 - An interpreter that executes statements during the tree walk.
 - A compiler that generates code for a hypothetical stack-based machine.
 - A version that generates a synatx tree of the original program.
@@ -152,7 +152,28 @@ We then proceed to write the **Grammar Rules and Actions**, this contains the ru
 
 Finally we write the **Post-Grammar Code**, which are the functions defining how to create the different types of our AST's nodes.
 
-/quote test
+<br>
+
+---
+
+<br>
+
+We should have now successfully tokenized our input into individual components, these tokens were then passed on to the parser. The parser itself applied the defined grammar rules, and as it matched rules, built the Abstract Synatx Tree, using the help of the three functions `con()`, `id()`, `opr()`. This tree was built incrementally, adding child or sibling nodes every time a rule was matched. This AST should show rerpresent in a hierarchical tree structure the input program's syntax.
+
+Now, one question remains, **what happens after the AST?**
+
+Well, as mentionned earlier, we have three different options, on how to use the AST:
+
+<br>
+
+## Interpreter
+
+The interpreter, the `ex()` function, **executes the AST directly**. This means that it will walk through the AST, evaulating expressions and executing statements, producing the ouput you would expect in the terminal when running the code.
+
+This works as such:
+- For each node in the AST, the interpreter recursively evaluates or executes it (similarly as done in the previous calculator[^1])
+- For constants and variables, nodes simply return their stored values, for operands and structures, we store the operands in an array of pointers, with each element representing one operand of the operator. Then, each specific operators has its own sets of instructions on what to perform.
+- Finally, the `ex()` function is **recursive**, calling itself to evalutate operands and nested expressions.
 
 
-
+[^1]: Recall, given an expression `E`, multiplying `x * y` would give: `x * y -> E * y -> E * E -> E`
