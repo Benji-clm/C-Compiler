@@ -464,7 +464,7 @@ char *yytext;
 #line 1 "lexer.l"
 #line 2 "lexer.l"
 #include <stdlib.h>
-#include "calc3.h"
+#include "calc2.h"
 #include "y.tab.h"
 void yyerror(char *);
 #line 470 "lex.yy.c"
