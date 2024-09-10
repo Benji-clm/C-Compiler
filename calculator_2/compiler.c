@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "calc3.h"
+#include "calc2.h"
 #include "y.tab.h"
 
 static int lbl;
