@@ -103,8 +103,8 @@ We start by creating **calc2.h**, to provide the correct headers and data struct
 In this file we define:
 - The **types** of nodes of our tree (constant values, identifier (variables) and operators.
 - The **structures** for each node type
-- A nodeTypeTag structure, in which we use `union`, allowing us to use a single memory cell location to store any of the three data types we have (only one type at a time however).
-- A symbol table (similarly as for the simpler calculator).
+- A **nodeTypeTag structure**, in which we use `union`, allowing us to use a single memory cell location to store any of the three data types we have (only one type at a time however).
+- A **symbol table** (similarly as for the simpler calculator).
 
 
 
