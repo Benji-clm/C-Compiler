@@ -142,9 +142,8 @@ In the `parser.y` file, we start by including the headers, the symbol table and 
 %nonassoc UMINUS
 ```
 
-Note how we use `%nonassoc UMINUS`, (unary minus, which negates the values of the operand); this has the highest precedence, and we later write in the rules that it must precede an `expr`.  We also note how operands have higher precedence than If, else ... statements, this allows code such as `while(x < y + 3)` to work as each token in `y+3` will be reconginsed by the lexer, and the grammar rules in the parser will make it so that `y + 3` will be recursively evaluated before performing the  `<` operator[^1].
+Note how we use `%nonassoc UMINUS`, (unary minus, which negates the values of the operand); this has the highest precedence, and we later write in the rules that it must precede an `expr`.  We also note how operands have higher precedence than If, else ... statements, this allows code such as `while(x < y + 3)` to work:
 
-[^1]: This is grossly oversimplified for the sake of keeping the text short, what actually happens is:
 1. The lexer converts the input `y+3` into the token stream `VARIABLE + INTEGER`
 2. The parser matches the tokens to the grammar rules, and constructrs the AST by creating three nodes: identifier - `y`, constant - `3`, operator - `+` which links `y` and `3` as its operands
 3. Once the AST is constructed, the `ex()` function is used to **execute** and **evalutate** the AST, which traverses the tree and performs the appropriate actions recursively based on the nodes.
