@@ -4,6 +4,9 @@
 #include <stdarg.h>
 #include "calc2.h"
 
+// We start by declaring functions that return pointers of type nodeType. 
+// Each of the three function allocates and initializes a node of type nodeType and returns a pointer to that node.
+// We later define these functions, but declare them now so that they can be used within the grammar rules.
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
 nodeType *id(int i);
@@ -83,6 +86,8 @@ expr:
 
 #define SIZEOF_NODETYPE ((char *)&p->con - (char *)p)
 
+// For a constant value we declare a pointer of type nodeType, then if we are able to allocate memory for the node, we give the pointer to the memory block to p.
+// We then copy the information (here the type of node and value of the constant) to p, and we return it.
 nodeType *con(int value) {
     nodeType *p;
 
@@ -111,6 +116,17 @@ nodeType *id(int i) {
     return p;
 }
 
+/*
+For opr, it is more particular, we make the use of variable arguments, as although we know the operator and the number of operands from the grammar rules,
+there can be a varying number of arguments, as different operators might need less or more operators.
+-> variable funcions are f^n that can take in a variable (changing) number of arguments. the function opr itself is variable (indicated by "...").
+Here is how variable functions work:
+ - va_list ap; holds the state of the variable argument list -> it creates a list "ap", which will contain the variable arguments passed to the function.
+ - va_start(ap, nops); is used to determine where variable arguments starts (here, they start after argument "int nops").
+ - va_arg(ap, nodeType*); ap points to the next argument, nodeType* is the type of the next argument.
+  -> The loop retrieves each variable arguments. The pointer p retrieves the different operands passed to the function and stores the pointer to them in an array p->opr.op[i]
+ - va_end(ap); simply cleans up the memory used by va_list ap;
+*/
 nodeType *opr(int oper, int nops, ...) {
     va_list ap;
     nodeType *p;
@@ -133,6 +149,9 @@ nodeType *opr(int oper, int nops, ...) {
     return p;
 }
 
+// This is the "destructor", which simply cleans up / deallocate the memory once we are done with the AST. It does so recursively,
+// for each operator, it goes through all its operands, and calls itself on it then, where if not an operator, deletes the operand, and if an operator, deletes this operators
+// operands before deleting itself.
 void freeNode(nodeType *p) {
     int i;
 
@@ -145,6 +164,7 @@ void freeNode(nodeType *p) {
     free (p);
 }
 
+// In case of faulty inputs, error function.
 void yyerror(char *s) {
     fprintf(stdout, "%s\n", s);
 }
