@@ -257,13 +257,21 @@ init_declarator_list
 
 init_declarator
 	: declarator {
-		$$ = $1;
-		// Note that $1 is already a node representing the declarator. Using = new Node($1) would create a child node of declarator containing the $1
+		Node* init_node = new Node();
+		init_node->branches_.push_back($1);
+		init_node->branches_.push_back(nullptr);
+		
+		context.AddVariable($1, 0, false);
+		
+		$$ = init_node;
 	}
 	| declarator '=' initializer {
 		Node* init_node = new Node();
 		init_node->branches_.push_back($1);
 		init_node->branches_.push_back($3);
+
+		context.AddVariable($1, $3, true);
+
 		$$ = init_node;
 		// Here, as we hvae both a declarator, and a value associated to it, we want to create two child nodes, one containing store the declarator (variable)
 		// Another one to store the initializer (expression).
@@ -288,6 +296,7 @@ type_specifier
 	| CHAR
 	| SHORT
 	| INT {
+		context.SetCurrentType("int");
 		$$ = new TypeSpecifier("int");
 	}
 	| LONG
