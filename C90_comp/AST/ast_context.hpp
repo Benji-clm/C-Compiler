@@ -10,15 +10,22 @@
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
 
+union VariableValue{
+    int int_value;
+    float float_value;
+    bool bool_value;
+};
+
 struct VariableInfo{
     std::string type;
-    int64_t location;
-    bool inRegister;
+    VariableLocation location;
+    VariableValue value_;
+    bool is_initialized_;
 };
 
 struct VariableLocation{
     std::string reg;
-    int64_t stack_loc;
+    int32_t stack_loc;
     bool inRegister;
 };
 
@@ -35,18 +42,18 @@ private:
     std::unordered_map<std::string, std::string> register_map_; //maps variable identifiers to registers
 
     std::unordered_map<std::string, int> VarPos;
-    int64_t stack_pointer_ = 0;
-    uint64_t fp_ = 0;
+    int32_t stack_pointer_ = 0;
+    uint32_t fp_ = 0;
 
 public:
 
 
     // Setters
 
-    void AddVariable(const std::string &name, const std::string &type, int location);
+    void AddVariable(const std::string &name, const VariableValue &value, const bool &is_initialized);
     void SetCurrentType(const std::string &type);
-    void AssignVarReg(const std::string& variable_identifier_, const std::string& register_identifier_);
-    void AllocateStack(const std::string &name);
+    void AssignVarReg(const std::string& variable_identifier_, const std::string& register_identifier_, const VariableValue &value, const bool &is_initialized);
+    void AllocateStack(const std::string &name, const VariableValue &value, const bool &is_initialized);
 
     // Getters
 
@@ -54,6 +61,7 @@ public:
     std::string GetVariableType(const std::string &name) const;
     VariableLocation GetVariableLoc(const std::string &name) const;
     std::string GetFreeReg();
+
 
     // Checks
 
