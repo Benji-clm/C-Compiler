@@ -50,7 +50,8 @@ private:
     int32_t stack_pointer_ = 0;
     uint32_t fp_ = 0;
 
-    int current_arg_count;
+    int current_arg_count_ = 0;
+    int function_counter_ = 0;
 
 public:
 
@@ -64,6 +65,7 @@ public:
     void SetIsInitialized(const std::string &name, const bool &is_initialized);
     void SetValue(const std::string &name, const VariableValue &value);
     void SetCurrentArgCount(const int &size);
+    void IncrementFCount();
 
     // Getters
 
@@ -76,6 +78,7 @@ public:
     VariableInfo GetVariableInfo(const std::string &name) const;
     VariableValue GetVariableValue(const std::string &name) const;
     int GetCurrentArgCount() const;
+    int GetFCount() const;
 
 
     // Checks

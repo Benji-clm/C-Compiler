@@ -11,18 +11,25 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // Emit the f^n name
     declarator_->EmitRISC(stream, context);
 
-    if (parameters_list_ != nullptr)
-    {
-        int size = parameters_list_->GetSize();
-        context.SetCurrentArgCount(size);
+    // The code below has been moved to *ast_function_call*. As it passes the arguments to the function when calling a function
+    // Function definition should have different logic -> TODO
 
-        stream << "a4,s0,-32" << std::endl;
+    // if (parameters_list_ != nullptr)
+    // {
+    //     int size = parameters_list_->GetSize();
+    //     context.SetCurrentArgCount(size);
 
-        // NodeList already implements going through the list, and calling emit risc on each node.
-        parameters_list_->EmitRISCreverse(stream, context);
+    //     // need to implemente "addi dest, src, imm" style (dest = src + imm)
+    //     // For the moment, we assume non float values, meaning 4 bytes per value:
 
-        stream << "call f."  << std::endl; // TODO: IMPLEMENT FUCNTIONS NO
-    }
+    //     stream << "addi a4,s0," << -4 * size << std::endl;
+
+    //     // NodeList already implements going through the list, and calling emit risc on each node.
+    //     parameters_list_->EmitRISCreverse(stream, context);
+
+    //     stream << "call" << declarator_ << "." << context.GetFCount() << std::endl;
+    //     context.IncrementFCount();
+    // }
 
 
     if (compound_statement_ != nullptr)

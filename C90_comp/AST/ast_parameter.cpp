@@ -14,18 +14,18 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context) const {
             
             if(info.location.inRegister){
                 stream << "li a5," << info.value_.int_value << std::endl;
-                stream << "sd a5," << 2 * (arg_count - 8) << "(sp)" << std::endl;
+                stream << "sw a5," << 4 * (arg_count - 8) << "(sp)" << std::endl;
             }
             else{
                 stream << "lw a5," << info.location.stack_loc << "(s0)" << std::endl;
-                stream << "sd a5," << 2 * (arg_count - 8) << "(sp)" << std::endl;
+                stream << "sw a5," << 4 * (arg_count - 8) << "(sp)" << std::endl;
             }
             
             if(arg_count == 8){
                 stream << "mv t2,a4" << std::endl;
             }
 
-            context.SetCurrentArgCount(arg_count--);
+            context.SetCurrentArgCount(--arg_count);
         }
 
         if(arg_count < 8){
@@ -35,10 +35,10 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context) const {
                 stream << "li " << reg << "," << info.value_.int_value << std::endl;
             }
             else{
-                stream << "lw " << reg << "," << info.location.stack_loc << "(s0)" << std::endl;
+                stream << "lw " << reg << "," << info.location.stack_loc << "(s0" << std::endl;
             }
 
-            context.SetCurrentArgCount(arg_count--);
+            context.SetCurrentArgCount(--arg_count);
         }
 
         else{

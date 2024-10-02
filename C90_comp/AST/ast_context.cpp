@@ -149,7 +149,12 @@ void Context::SetValue(const std::string &name, const VariableValue &value){
 
 
 void Context::SetCurrentArgCount(const int &size){
-    current_arg_count = size;
+    current_arg_count_ = size;
+}
+
+
+void Context::IncrementFCount(){
+    function_counter_++;
 }
 
 
@@ -270,8 +275,16 @@ VariableValue Context::GetVariableValue(const std::string &name) const{
 
 
 int Context::GetCurrentArgCount() const{
-    return current_arg_count;
+    return current_arg_count_;
 }
+
+
+int Context::GetFCount() const{
+    return function_counter_;
+}
+
+
+
 
 
 // Checkers
