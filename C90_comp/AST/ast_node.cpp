@@ -36,3 +36,7 @@ void NodeList::Print(std::ostream &stream) const
         node->Print(stream);
     }
 }
+
+int NodeList::GetSize(){
+    return nodes_.size();
+}

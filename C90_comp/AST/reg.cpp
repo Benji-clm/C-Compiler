@@ -10,7 +10,7 @@ void Reg::setRegisterId(const std::string& reg_id){
     register_identifier_ = reg_id;
 }
 
-void Reg::setFP(const uint64_t& FP){
+void Reg::setFP(const uint32_t& FP){
     fp_ = FP;
 }
 

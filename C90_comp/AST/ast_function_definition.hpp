@@ -17,6 +17,7 @@ private:
   
     Node *declaration_specifiers_;
     Node *declarator_;
+    NodeList *parameters_list_;
     Node *compound_statement_;
 
 public:
@@ -25,15 +26,19 @@ public:
     FunctionDefinition
     (Node *declaration_specifiers,
      Node *declarator,
-     Node *compound_statement) :
+     NodeList *parameters_list,
+     Node *compound_statement
+     ) :
       declaration_specifiers_(declaration_specifiers),
       declarator_(declarator),
+      parameters_list_(parameters_list),
       compound_statement_(compound_statement){};
-  
+
     ~FunctionDefinition()
     {
         delete declaration_specifiers_;
         delete declarator_;
+        delete parameters_list_;
         delete compound_statement_;
     };
   
