@@ -91,20 +91,32 @@ function_definition
 
 
 primary_expression
-	: IDENTIFIER
+	: IDENTIFIER {
+		$$ = new Identifier(*$1);
+		delete $1;
+	}
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
-    | FLOAT_CONSTANT
+	| FLOAT_CONSTANT
 	| STRING_LITERAL
 	| '(' expression ')'
 	;
 
 postfix_expression
-	: primary_expression
+	: primary_expression 
+	{
+		$$ = $1;
+	}
 	| postfix_expression '[' expression ']'
 	| postfix_expression '(' ')'
-	| postfix_expression '(' argument_expression_list ')'
+	{
+		$$ = new FunctionCall($1, nullptr);
+	}
+	| postfix_expression '(' argument_expression_list ')' 
+	{
+		$$ = new FunctionCall($1, $2);
+	}
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP
@@ -112,8 +124,11 @@ postfix_expression
 	;
 
 argument_expression_list
-	: assignment_expression
+	: assignment_expression {$$ = new NodeList($1);}
 	| argument_expression_list ',' assignment_expression
+	{
+		$1->PushBack($2); $$ = $1;
+	}
 	;
 
 unary_expression
