@@ -68,12 +68,12 @@ external_declaration
 	// 3. compound_statement
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement {
-		$$ = new FunctionDefinition($1, $2, CompoundStatement($3, $4));
+	: declaration_specifiers declarator '(' parameter_list ')' declaration_list compound_statement {
+		$$ = new FunctionDefinition($1, $2, $3, CompoundStatement($4, $5));
 	}
 	// This one is the simplest one, it is already formatted proplerly
-	| declaration_specifiers declarator compound_statement {
-		$$ = new FunctionDefinition($1, $2, $3);
+	| declaration_specifiers declarator '(' parameter_list ')' compound_statement {
+		$$ = new FunctionDefinition($1, $2, $3, $4);
 	}
 
 	// For this one, first notice there is no *declaration_specifier*, hence we send nullptr to show there is no return type
@@ -82,10 +82,10 @@ function_definition
 	// compound_statement, hence to bring them together, we make the use of the compound_statement() function.
 	// (A similar approach was applied to the first case).
 	| declarator declaration_list compound_statement {
-		$$ = new FunctionDefinition(nullptr, $1, CompoundStatement($2, $3));
+		$$ = new FunctionDefinition(nullptr, $1, nulltpr , CompoundStatement($2, $3));
 	}
 	| declarator compound_statement {
-		$$ = new FunctionDefinition(nullptr, $1, $3);
+		$$ = new FunctionDefinition(nullptr, $1, nullptr, $3);
 	}
 	;
 
@@ -261,7 +261,8 @@ init_declarator
 		init_node->branches_.push_back($1);
 		init_node->branches_.push_back(nullptr);
 		
-		context.AddVariable($1, 0, false);
+		context.AddVariable($1);
+		context.SetIsInitialized($1, false);
 		
 		$$ = init_node;
 	}
@@ -270,7 +271,9 @@ init_declarator
 		init_node->branches_.push_back($1);
 		init_node->branches_.push_back($3);
 
-		context.AddVariable($1, $3, true);
+		context.AddVariable($1);
+		context.SetIsInitialized($1, true);
+		context.SetValue($1, $3);
 
 		$$ = init_node;
 		// Here, as we hvae both a declarator, and a value associated to it, we want to create two child nodes, one containing store the declarator (variable)
@@ -369,7 +372,7 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'
+	| direct_declarator '(' parameter_list ')' { $$ = new DirectDeclarator($1) }
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
 		$$ = new DirectDeclarator($1);
@@ -382,8 +385,11 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration {$$ = new NodeList($1)}
+	| parameter_list ',' parameter_declaration {
+		$1->PushBack($2);
+		$$ = $1
+		}
 	;
 
 parameter_declaration
