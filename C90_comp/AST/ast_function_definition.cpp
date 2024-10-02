@@ -15,8 +15,13 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     {
         int size = parameters_list_->GetSize();
         context.SetCurrentArgCount(size);
+
+        stream << "a4,s0,-32" << std::endl;
+
         // NodeList already implements going through the list, and calling emit risc on each node.
         parameters_list_->EmitRISCreverse(stream, context);
+
+        stream << "call f."  << std::endl; // TODO: IMPLEMENT FUCNTIONS NO
     }
 
 

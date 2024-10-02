@@ -6,33 +6,39 @@ void Parameter::EmitRISC(std::ostream &stream, Context &context) const {
     // Hence, we need to check the type of the arguments, and adjust accoridingly the logic we use to pass the argument.
     
     int arg_count = context.GetCurrentArgCount();
-    VariableLocation loc = context.GetVariableLoc(identifier_);
+    VariableInfo info = context.GetVariableInfo(identifier_);
 
-    if(type_ != "float"){
+    if(type_ == "int"){
 
         if(arg_count >= 8){
             
-            if(loc.inRegister){
-                stream << "mv " << reg << "," << loc.reg;
+            if(info.location.inRegister){
+                stream << "li a5," << info.value_.int_value << std::endl;
+                stream << "sd a5," << 2 * (arg_count - 8) << "(sp)" << std::endl;
             }
             else{
-                stream << "mv " << reg << "," << loc.stack_loc;
+                stream << "lw a5," << info.location.stack_loc << "(s0)" << std::endl;
+                stream << "sd a5," << 2 * (arg_count - 8) << "(sp)" << std::endl;
             }
             
+            if(arg_count == 8){
+                stream << "mv t2,a4" << std::endl;
+            }
 
             context.SetCurrentArgCount(arg_count--);
         }
 
         if(arg_count < 8){
             std::string reg = "a" + std::to_string(arg_count);
-            arg_count--;
 
-            if(loc.inRegister){
-                stream << "mv " << reg << "," << loc.reg;
+            if(info.location.inRegister){
+                stream << "li " << reg << "," << info.value_.int_value << std::endl;
             }
             else{
-                stream << "mv " << reg << "," << loc.stack_loc;
+                stream << "lw " << reg << "," << info.location.stack_loc << "(s0)" << std::endl;
             }
+
+            context.SetCurrentArgCount(arg_count--);
         }
 
         else{
