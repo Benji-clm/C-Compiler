@@ -9,10 +9,12 @@ private:
     std::string identifier_;
 
 public:
-    Identifier(std::string identifier) : identifier_(identifier){};
+    Identifier(std::string identifier) : identifier_(identifier){
+    };
     ~Identifier(){};
     void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
+    std::string GetIdentifier() const override;
 };
 
 #endif

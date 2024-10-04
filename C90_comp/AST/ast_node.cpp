@@ -25,6 +25,17 @@ void NodeList::EmitRISC(std::ostream &stream, Context &context) const
     }
 }
 
+void NodeList::EmitRISCreverse(std::ostream &stream, Context &context) const
+{
+    for (auto it = nodes_.rbegin(); it != nodes_.rend(); ++it)
+    {
+        if (*it != nullptr)
+        {
+            (*it)->EmitRISC(stream, context); // Call EmitRISC in reverse order
+        }
+    }
+}
+
 void NodeList::Print(std::ostream &stream) const
 {
     for (auto node : nodes_)

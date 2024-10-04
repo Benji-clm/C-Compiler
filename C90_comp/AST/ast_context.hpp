@@ -34,7 +34,6 @@ class Context
 {
 private:
 
-    // So far, we will map each variable to their types, assuming their types are strings, namely "int", "float" etc.
     std::unordered_map<std::string, VariableInfo> symbol_table_;
     std::string current_type_;
 
@@ -52,6 +51,9 @@ private:
 
     int current_arg_count_ = 0;
     int function_counter_ = 0;
+    std::unordered_map<std::string, int> f_call_map_;
+
+    std::string current_identifier_;
 
 public:
 
@@ -66,6 +68,8 @@ public:
     void SetValue(const std::string &name, const VariableValue &value);
     void SetCurrentArgCount(const int &size);
     void IncrementFCount();
+    void SetFCallMap(const std::string &name);
+    void SetCurrentIdentifier(const std::string &name);
 
     // Getters
 
@@ -78,7 +82,9 @@ public:
     VariableInfo GetVariableInfo(const std::string &name) const;
     VariableValue GetVariableValue(const std::string &name) const;
     int GetCurrentArgCount() const;
-    int GetFCount() const;
+    int GetFCount(const std::string &name) const;
+    int GetCurrentFCount() const;
+    std::string GetCurrentIdentifier() const;
 
 
     // Checks

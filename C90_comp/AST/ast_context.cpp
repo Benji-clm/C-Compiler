@@ -158,6 +158,16 @@ void Context::IncrementFCount(){
 }
 
 
+void Context::SetFCallMap(const std::string &name){
+    f_call_map_[name] = function_counter_;
+}
+
+
+void Context::SetCurrentIdentifier(const std::string &name){
+    current_identifier_ = name;
+}
+
+
 
 
 
@@ -217,16 +227,14 @@ std::string Context::GetFreeReg(){
     return "";
 }
 
-// A Get Argument Register function is not needed, as these registers are not saved across call, meaning they will be free again after
-// being used for the function. We simply have to, whenever calling a f^n, save the first 8 parameters in the registers then use the stack.
 
-// std::string Context::GetArgReg(){
-//     for(size_t i = 10; i <= 17; i++){
-//         if(available_registers_[i].isRegFree()){
-//             return available_registers_[i].getRegisterId();
-//         }
-//     }
-// }
+std::string Context::GetArgReg(){
+    for(size_t i = 10; i <= 17; i++){
+        if(available_registers_[i].isRegFree()){
+            return available_registers_[i].getRegisterId();
+        }
+    }
+}
 
 std::string Context::GetFreeFloatReg(){
 
@@ -279,8 +287,25 @@ int Context::GetCurrentArgCount() const{
 }
 
 
-int Context::GetFCount() const{
+int Context::GetFCount(const std::string &name) const{
+    auto it = f_call_map_.find(name);
+
+    if(it != f_call_map_.end()){
+        return it->second;
+    }
+    else{
+        throw std::runtime_error("Function DNE: " + name);
+    }
+}
+
+
+int Context::GetCurrentFCount() const{
     return function_counter_;
+}
+
+
+std::string Context::GetCurrentIdentifier() const{
+    return current_identifier_;
 }
 
 

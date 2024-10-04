@@ -8,7 +8,6 @@ class Parameter : public Node
 private:
     std::string identifier_;
     std::string type_;
-    int arg_count;
 
 public:
     Parameter(const std::string &identifier, const std::string &type) : type_(type), identifier_(identifier) {}

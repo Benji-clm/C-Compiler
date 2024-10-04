@@ -9,3 +9,14 @@ void Identifier::Print(std::ostream &stream) const
 {
     stream << identifier_;
 };
+
+std::string Identifier::GetIdentifier() const
+{
+    return identifier_;
+}
+
+
+void Identifier::SetIndentifier()
+{
+       
+}

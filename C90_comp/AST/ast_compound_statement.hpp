@@ -4,7 +4,7 @@
 #include "ast_node.hpp"
 
 class CompoundStatement : public Node
-{
+{   
     private:
         NodeList *declaration_list_;
         NodeList *statement_list_;

@@ -22,19 +22,20 @@ void Declarator::EmitRISC(std::ostream &stream, Context &context) const{
 
         if(var_info.type == "int"){
             if(loc.inRegister){
-                stream << "li" << loc.reg << ", " << var_value.int_value << std::endl;
+                stream << "li " << loc.reg << "," << var_value.int_value << std::endl;
             }
             else{
-                stream << "li t0, " << var_value.int_value << std::endl;
-                stream << "sw t0, " << loc.stack_loc << "(s0)" << std::endl;
+                stream << "li t0," << var_value.int_value << std::endl;
+                stream << "sw t0," << loc.stack_loc << "(s0)" << std::endl;
             }   
         }
 
+        // TODO: IMPLEMENT OTHER VARIABLES AND FINISH IMPLEMENTING FLOAT
         if(var_info.type == "float"){
             std::string float_reg = context.GetFreeFloatReg();
             if(!float_reg.empty() && loc.inRegister){
-                stream << "lui" << loc.reg << ",%hi(.LC0)" << std::endl;
-                stream << "flw" << float_reg << ",%lo(.LC0)" << std::endl;
+                stream << "lui " << loc.reg << ",%hi(.LC0)" << std::endl;
+                stream << "flw " << float_reg << ",%lo(.LC0)" << std::endl;
             }
             // TODO: IMPLEMENT STACK STRUCTURE FOR FLOATING POINTS?
             else{
@@ -42,4 +43,8 @@ void Declarator::EmitRISC(std::ostream &stream, Context &context) const{
             }
         }
     }
+}
+
+std::string Declarator::GetIdentifier() const{
+    return declarator_;
 }

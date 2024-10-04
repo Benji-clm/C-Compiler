@@ -9,3 +9,7 @@ void IntConstant::Print(std::ostream &stream) const
 {
     stream << value_;
 }
+
+int IntConstant::GetValue() const {
+    return value_;
+}
