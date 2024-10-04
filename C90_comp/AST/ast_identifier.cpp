@@ -14,9 +14,3 @@ std::string Identifier::GetIdentifier() const
 {
     return identifier_;
 }
-
-
-void Identifier::SetIndentifier()
-{
-       
-}
